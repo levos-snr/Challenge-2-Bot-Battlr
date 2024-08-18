@@ -10,7 +10,7 @@ const botTypeClasses = {
   Captain: "icon star",
 };
 
-function BotCard({ bot, onAddToArmy, onRemoveFromArmy, onDischarge, isInArmy }) {
+function BotCard({ bot, onAddToArmy, onRemoveFromArmy, onDischarge, isInArmy, viewBot }) {
   return (
     <div className="ui card">
       <div className="image">
@@ -44,6 +44,14 @@ function BotCard({ bot, onAddToArmy, onRemoveFromArmy, onDischarge, isInArmy }) 
         </span>
         </div>
           <div className= "content flex  items-center justify-center space-y-1 m-2">
+            <Button animated="fade" primary onClick={() => viewBot(bot)} className="flex justify-center items-center">
+              <Button.Content visible className="flex justify-center items-center">
+                View more
+              </Button.Content>
+              <Button.Content hidden className="flex justify-center items-center">
+                <Icon name="eye" />
+              </Button.Content>
+            </Button>
             {onAddToArmy && !isInArmy && (
               <Button animated="fade" primary onClick={onAddToArmy} className="flex justify-center items-center">
                 <Button.Content visible className="flex justify-center items-center">

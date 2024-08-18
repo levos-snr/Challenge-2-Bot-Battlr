@@ -1,7 +1,7 @@
 import React from "react";
 import BotCard from "./BotCard";
 
-function BotCollection({ bots, addToArmy, botArmy }) {
+function BotCollection({ bots, addToArmy, botArmy, viewBot }) {
   return (
     <div className="ui four column grid gap-4 p-6">
       <p className="text-2xl font-bold text-center mb-6">Your Bot Collection</p>
@@ -12,6 +12,7 @@ function BotCollection({ bots, addToArmy, botArmy }) {
               bot={bot}
               onAddToArmy={() => addToArmy(bot)}
               isInArmy={botArmy.some(b => b.id === bot.id)}
+              viewBot={() => viewBot(bot)}
             />
           </div>
         ))}

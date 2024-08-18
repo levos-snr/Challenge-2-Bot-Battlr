@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import BotsPage from "./BotsPage";
+import { useNavigate } from "react-router-dom";
+import YourBotArmy from "../components/YourBotArmy";
+import BotCollection from "../components/BotCollection";
 
-function App() {
+function BotsPage() {
   const [bots, setBots] = useState([]);
   const [botArmy, setBotArmy] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBots = async () => {
-      const response = await fetch("http://localhost:8002/bots");
+      const response = await fetch("https://server-vercel-vert.vercel.app/bots");
       if (!response.ok) {
         throw new Error("Failed to fetch bots");
       }
@@ -28,24 +31,35 @@ function App() {
   };
 
   const dischargeBot = async (bot) => {
-    await fetch(`http://localhost:8002/bots/${bot.id}`, {
+    await fetch(`https://server-vercel-vert.vercel.app/bots/${bot.id}`, {
       method: 'DELETE',
     });
     removeFromArmy(bot);
     setBots(bots.filter(b => b.id !== bot.id));
   };
 
+  const viewBot = (bot) => {
+    navigate(`/bot/${bot.id}`, { state: { bot } });
+  };
+
+  
+  
   return (
-    <div className="App">
-      <BotsPage
-        bots={bots}
-        addToArmy={addToArmy}
+    <div>
+      <YourBotArmy
+        botArmy={botArmy}
         removeFromArmy={removeFromArmy}
         dischargeBot={dischargeBot}
+        viewBot={viewBot}
+      />
+      <BotCollection
+        bots={bots}
+        addToArmy={addToArmy}
         botArmy={botArmy}
+        viewBot={viewBot}
       />
     </div>
   );
 }
 
-export default App;
+export default BotsPage;

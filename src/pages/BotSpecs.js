@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { useLocation,useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 const botTypeClasses = {
   Assault: "icon military",
@@ -9,14 +12,30 @@ const botTypeClasses = {
   Captain: "icon star",
 };
 
-function BotSpecs({ bot }) {
+function BotSpecs() {
+  const [botArmy, setBotArmy] = useState([]);
+  const location = useLocation();
+  const bot = location.state?.bot;
+  const navigate = useNavigate();
+
+  if (!bot) {
+    return <p>Bot not found</p>;
+  }
+  
+  const addToArmy = (bot) => {
+    if (!botArmy.find(b => b.id === bot.id)) {
+      setBotArmy([...botArmy, bot]);
+      navigate("/");
+    }
+  };
+
   return (
     <div className="ui segment">
       <div className="ui two column centered grid">
         <div className="row">
           <div className="four wide column">
             <img
-              alt="oh no!"
+              alt="bot"
               className="ui medium circular image bordered"
               src={bot.avatar_url}
             />
@@ -50,21 +69,16 @@ function BotSpecs({ bot }) {
                 </div>
               </div>
             </div>
+            <Link to="/">
             <button
               className="ui button fluid"
-              onClick={() =>
-                console.log("connect this to a function that shows all bots")
-              }
             >
               Go Back
             </button>
+            </Link>
             <button
               className="ui button fluid"
-              onClick={() =>
-                console.log(
-                  "connect this to a function that adds this bot to your bot army list"
-                )
-              }
+              onClick={() => addToArmy(bot)}
             >
               Enlist
             </button>
